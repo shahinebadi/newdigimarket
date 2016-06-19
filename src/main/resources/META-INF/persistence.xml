@@ -1,0 +1,28 @@
+<persistence version="1.0"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+       http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+
+    <persistence-unit name="DB_CONNECTION" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>ir.apk.dm.core.model.AccountInfo</class>
+        <class>ir.apk.dm.core.model.OrderInfo</class>
+        <class>ir.apk.dm.core.model.ProductInfo</class>
+        <class>ir.apk.dm.core.model.CellphoneInfo</class>
+        <class>ir.apk.dm.core.model.ProductCategoryInfo</class>
+        <class>ir.apk.dm.core.model.TabletInfo</class>
+        <class>ir.apk.dm.core.model.LaptopInfo</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.user" value="postgres"/>
+            <property name="javax.persistence.jdbc.password" value="postgres"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.0.0.1:5432/store"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgresPlusDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.max_fetch_depth" value="3"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="10"/>
+        </properties>
+    </persistence-unit>
+</persistence>

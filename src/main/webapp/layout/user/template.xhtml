@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+    </p:confirmDialog>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <h:outputStylesheet library="css" name="common.css"/>
+    <h:outputScript library="js" name="js.js" target="body"/>
+    <style type="text/css">
+        #rcorners {
+            border-radius: 25px;
+            border:        2px solid #8CE9FF;
+            padding:       20px;
+            width:         1138px;
+            height:        130px;
+        }
+
+        #rcorners1 {
+            border-radius:    21px;
+            border:           2px solid #53dfff;
+            padding:          20px;
+            width:            93px;
+            height:           103px;
+            margin-top:       -155px;
+            margin-left:      1008px;
+            background-color: #c5f4ff;
+        }
+
+        #rcorners2 {
+            border-radius:    21px;
+            border:           2px solid #53dfff;
+            padding:          20px;
+            width:            123px;
+            height:           120px;
+            margin-top:       -152px;
+            margin-left:      491px;
+            background-color: #077BBD;
+        }
+    </style>
+    <ui:insert name="head"/>
+</h:head>
+<h:body>
+    <h:form id="idleMessage">
+        <p:growl id="idleMessages" showDetail="true" sticky="true"/>
+        <p:idleMonitor timeout="60000">
+            <p:ajax event="idle" listener="#{navigationBean.onIdle}" update="idleMessages"/>
+            <p:ajax event="active" listener="#{navigationBean.onActive}" update="idleMessages"/>
+        </p:idleMonitor>
+    </h:form>
+    <pe:layout id="fullPage" stateCookie="true" widgetVar="layoutWidget">
+        <pe:layoutPane position="center">
+            <div id="rcorners">
+                <h:form>
+                    <p:graphicImage value="#{resource['images/digi_logo.jpg']}" width="156px" title="Welcome To Digi Market" style="margin-top: -20px"/>
+                    <h:outputText value="Welcome To Digi Market" style="margin-left: -152px;font-weight: bold;font: 'Big Caslon'"/>
+                    <p:stack icon="/resources/images/stack.png" expanded="true">
+                        <p:menuitem value="Home" icon="/resources/images/home.png" action="#{navigationBean.moveToHome}"/>
+                        <p:menuitem value="Contact_us" icon="/resources/images/email.png" action="#{navigationBean.moveToContactUs}"/>
+                        <p:menuitem value="Laptops" icon="/resources/images/laptop.png" action="#{navigationBean.moveToLaptop}"/>
+                        <p:menuitem value="Tablets" icon="/resources/images/tablet.png" action="#{navigationBean.moveToTablet}"/>
+                        <p:menuitem value="Cellphones" icon="/resources/images/cellphone.png" action="#{navigationBean.moveToCellphone}"/>
+                    </p:stack>
+                    <div id="rcorners2">
+                        <canvas id="canvas" style="width: 169px"/>
+                        <script async="async" src="../../resources/js/js.js"></script>
+                    </div>
+                </h:form>
+                <div id="rcorners1">
+                    <h:panelGroup id="panel" style="text-align: center">
+                        <p:commandButton value="SignUp" actionListener="#{navigationBean.moveToSignUpPage}" style="margin-bottom: 6px;border:2px outset" rendered="#{!loginBean.loggedIn}"/>
+                        <p:commandButton value="LogIn" style="width: 101px;margin-top: 20px;text-align: center;border: 2px outset" onclick="PF('dlg').show()" rendered="#{!loginBean.loggedIn}"/>
+                        <h:outputText id="welcome" rendered="#{loginBean.loggedIn}" value="#{loginBean.welcome}" style="text-align: center;font-weight: bold"/>
+                        <p:commandButton value="Log out" style="width: 101px;margin-top: 20px;text-align: center;border: 2px outset" rendered="#{loginBean.loggedIn}" actionListener="#{loginBean.logOut}" update="growl">
+                            <p:confirm header="Confirmation" message="Are you sure to log out?" icon="ui-icon-alert" />
+                            <p:ajax update="panel" listener="#{loginBean.logOut}"/>
+                        </p:commandButton>
+                    </h:panelGroup>
+                    <p:growl id="growl" sticky="true" showDetail="true" life="2000"/>
+                    <h:form>
+                        <p:dialog header="Login" widgetVar="dlg" resizable="false" responsive="true">
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+                                <h:outputLabel for="userName" value="Username:"/>
+                                <p:inputText id="userName" value="#{loginBean.userName}" required="true" requiredMessage="User name must be filled"/>
+
+                                <h:outputLabel for="password" value="Password:"/>
+                                <p:password id="password" value="#{loginBean.attemptedPassword}" required="true" requiredMessage="Password must be filled"/>
+                                <f:facet name="footer">
+                                    <p:commandButton value="Login" process="@form" update="growl" actionListener="#{loginBean.login}" oncomplete="handleLoginRequest(xhr, status, args)">
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:panelGrid>
+                            <p:ajax update="panel" event="close"/>
+                        </p:dialog>
+                    </h:form>
+                </div>
+            </div>
+            <p:separator/>
+            <h:form>
+                <p:growl id="messages"/>
+                <p:menubar>
+                    <p:submenu label="Laptops" icon="ui-icon-document">
+                        <p:menuitem value="Apple" action="#{navigationBean.moveToAppleLaptops}"/>
+                    </p:submenu>
+
+                    <p:submenu label="Tablets" icon="ui-icon-document">
+                        <p:menuitem value="Apple" action="#{navigationBean.moveToAppleTablets}"/>
+                    </p:submenu>
+
+                    <p:submenu label="Cellphones" icon="ui-icon-document">
+                        <p:menuitem value="BlackBerry" action="#{navigationBean.moveToBlackBerry}"/>
+                    </p:submenu>
+
+                    <f:facet name="options">
+                        <p:inputText style="margin-right:10px" placeholder="what are you looking for?"/>
+                        <p:commandButton value="Search" type="button" style="border: 2px outset"/>
+                    </f:facet>
+                </p:menubar>
+                <p:separator/>
+            </h:form>
+            <ui:insert name="content"/>
+        </pe:layoutPane>
+    </pe:layout>
+</h:body>
+</html>

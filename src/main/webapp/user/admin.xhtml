@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/layout/user/template.xhtml">
+
+    <ui:define name="head">
+        <title> Admin </title>
+    </ui:define>
+
+    <ui:define name="content">
+        <ui:param name="totalProductCount" value="#{fn:length(adminBean.productInfoList)}"/>
+
+        <p:dialog id="dlg" header="Add New Product" widgetVar="dlg" resizable="true" modal="true" responsive="true">
+            <h:form>
+                <p:scrollPanel mode="native" style="width:600px;height:600px">
+                    <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-4,ui-grid-col-8">
+
+                        <h:outputLabel for="id" value="ID:"/>
+                        <p:inputText id="id" value="#{adminBean.productId}" required="true" requiredMessage="Id must be filled"/>
+
+                        <h:outputLabel for="arrivalDate" value="Arrival Date:"/>
+                        <p:calendar id="arrivalDate" value="#{adminBean.arrivalDate}" effect="fold" required="true"/>
+
+                        <h:outputLabel for="isExisted" value="Is Existed:"/>
+                        <p:selectOneRadio id="isExisted" value="#{adminBean.existed}" required="true">
+                            <f:selectItem itemLabel="Exists" itemValue="#{true}"/>
+                            <f:selectItem itemLabel="Not Exists" itemValue="#{false}"/>
+                        </p:selectOneRadio>
+
+                        <h:outputLabel for="price" value="Price:"/>
+                        <p:inputText id="price" value="#{adminBean.price}" required="true" requiredMessage="Price must be filled"/>
+
+                        <h:outputLabel for="quantity" value="Quantity:"/>
+                        <p:inputText id="quantity" value="#{adminBean.quantity}" required="true" requiredMessage="Quantity must be filled"/>
+
+                        <h:outputLabel for="color" value="Color:"/>
+                        <p:inputText id="color" value="#{adminBean.color}" required="true" requiredMessage="Color must be filled"/>
+
+                        <h:outputLabel for="brand" value="Brand:"/>
+                        <p:selectOneMenu id="brand" value="#{adminBean.brand}" style="width:125px" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItem itemLabel="Apple" itemValue="apple"/>
+                            <f:selectItem itemLabel="Black Berry" itemValue="blackberry"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="type" value="Type:"/>
+                        <p:selectOneMenu id="type" value="#{adminBean.type}" style="width:125px" required="true">
+                            <f:selectItem itemLabel="Select One" itemValue=""/>
+                            <f:selectItem itemLabel="Laptops" itemValue="laptops"/>
+                            <f:selectItem itemLabel="Cellphones" itemValue="cellphones"/>
+                            <f:selectItem itemLabel="Tablets" itemValue="tablets"/>
+                        </p:selectOneMenu>
+
+                        <h:outputLabel for="displaySize" value="Display Size:"/>
+                        <p:inputText id="displaySize" value="#{adminBean.displaySize}" required="true" requiredMessage="Display Size must be filled"/>
+
+                        <h:outputLabel for="dimension" value="Dimension:"/>
+                        <p:inputText id="dimension" value="#{adminBean.dimension}" required="true" requiredMessage="Dimension must be filled"/>
+
+                        <h:outputLabel for="weight" value="Weight:"/>
+                        <p:inputText id="weight" value="#{adminBean.weight}" required="true" requiredMessage="Weight must be filled"/>
+
+                        <h:outputLabel for="graphicalProcessor" value="Graphical Processor:"/>
+                        <p:inputText id="graphicalProcessor" value="#{adminBean.graphicalProcessor}" required="true" requiredMessage="Graphical Processor must be filled"/>
+
+                        <h:outputLabel for="mainProcessor" value="Main Processor:"/>
+                        <p:inputText id="mainProcessor" value="#{adminBean.mainProcessor}" required="true" requiredMessage="Main Processor must be filled"/>
+
+                        <h:outputLabel for="processorSpeed" value="Processor Speed:"/>
+                        <p:inputText id="processorSpeed" value="#{adminBean.processorSpeed}" required="true" requiredMessage="Processor Speed must be filled"/>
+
+                        <h:outputLabel for="RAM" value="RAM:"/>
+                        <p:inputText id="RAM" value="#{adminBean.RAM}" required="true" requiredMessage="RAM must be filled"/>
+
+                        <h:outputLabel for="OS" value="OS:"/>
+                        <p:inputText id="OS" value="#{adminBean.OS}" required="true" requiredMessage="OS must be filled"/>
+
+                        <h:outputLabel for="model" value="model:"/>
+                        <p:inputText id="model" value="#{adminBean.model}" required="true" requiredMessage="model must be filled"/>
+
+                        <f:facet name="footer">
+                            <p:commandButton value="Save"  process="@form" update="growl" actionListener="#{adminBean.saveNewProduct}">
+                            </p:commandButton>
+                        </f:facet>
+                    </p:panelGrid>
+                </p:scrollPanel>
+            </h:form>
+        </p:dialog>
+
+
+        <h:form>
+            <p:fieldset id="productField" legend="Available Products" toggleable="true">
+                <p:dataTable id="products" var="product" value="#{adminBean.productInfoList}" rowKey="#{product.nickname}"
+                             rowIndexVar="index" rows="10"
+                             paginator="true"
+                             rowsPerPageTemplate="5,10,20,#{totalProductCount}" scrollable="true" scrollHeight="200"
+                             paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+                    <p:column styleClass="centeredColumn" headerText="Index">
+                        <h:outputText value="#{index+1}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="Product ID">
+                        <h:outputText value="#{product.productId}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="Model">
+                        <h:outputText value="#{product.model}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="Arrical Date">
+                        <h:outputText value="#{product.arrivalDate}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="Is Existed">
+                        <h:outputText value="#{product.existed}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="Price">
+                        <h:outputText value="#{product.price}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="Brand">
+                        <h:outputText value="#{product.brand}"/>
+                    </p:column>
+
+                    <p:column styleClass="centeredColumn" headerText="OS">
+                        <h:outputText value="#{product.OS}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:fieldset>
+        </h:form>
+        <p:commandButton value="Add New Product" style="height: 47px;margin-top: 20px;text-align: center;border: 2px outset" onclick="PF('dlg').show()"/>
+
+    </ui:define>
+
+</ui:composition>

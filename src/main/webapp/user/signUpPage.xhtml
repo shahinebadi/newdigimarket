@@ -1,0 +1,44 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core"
+                template="/layout/user/template.xhtml">
+
+    <ui:define name="content">
+        <title>Sign up Page</title>
+        <h:form>
+            <p:panelGrid columns="2" columnClasses="ui-grid-col-3,ui-grid-col-12" layout="grid" styleClass="ui-panelgrid-blank">
+                <p:outputLabel for="userName" value="Username"/>
+                <p:inputText id="userName" value="#{accountBean.userName}" required="true" placeholder="A custom username"/>
+
+                <h:outputLabel for="pwd1" value="Password *"/>
+                <p:password id="pwd1" placeholder="Your Password" value="#{accountBean.password}" match="pwd2" label="Password 1" required="true" feedback="true"/>
+
+                <h:outputLabel for="pwd2" value="Re enter your Password *"/>
+                <p:password id="pwd2" placeholder="Your password again" value="#{accountBean.password}" label="Password 2" required="true"/>
+
+                <p:outputLabel for="firstName" value="First Name"/>
+                <p:inputText id="firstName" placeholder="Your Name" value="#{accountBean.firstName}" required="true"/>
+
+                <p:outputLabel for="lastName" value="Last Name"/>
+                <p:inputText id="lastName" placeholder="Your Family Name" value="#{accountBean.lastName}" required="true"/>
+
+                <p:outputLabel for="tel" value="Cellphone Number"/>
+                <p:inputMask id="tel" required="true" placeholder="Your Cellphone Number" value="#{accountBean.tel}" mask="(999) 999-9999"/>
+
+                <p:outputLabel for="address" value="Address"/>
+                <p:inputText id="address" placeholder="Your Address" value="#{accountBean.address}" required="true"/>
+
+                <p:outputLabel for="isAdmin" value="Select Type"/>
+                <p:selectOneRadio id="isAdmin" value="#{accountBean.admin}" required="true">
+                    <f:selectItem itemLabel="Admin" itemValue="#{true}"/>
+                    <f:selectItem itemLabel="Not Admin" itemValue="#{false}"/>
+                </p:selectOneRadio>
+
+                <p:commandButton value="Sign Up" update="growl" icon="ui-icon-check" process="@form" style="text-align: center;border: 2px outset" actionListener="#{accountBean.signUp}"/>
+            </p:panelGrid>
+        </h:form>
+    </ui:define>
+
+</ui:composition>
